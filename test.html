@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>DM Core Test</title>
+</head>
+<body>
+	<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>	
+	<script src="scripts/dist/dm.core.js"></script>
+	<script>
+		/// <reference path="typescript.definitions/dm.core.d.ts""/>
+		
+		var User = function (firstName, lastName) {
+			this.firstName = firstName;
+			this.lastName = lastName;	
+		};
+		
+		var usersList = new dm.types.List();
+		usersList.push(new User("William", "Rees"));
+		usersList.push(new User("Lianne", "Spriggs"));
+		usersList.push(new User("Chris", "Parr"));
+		usersList.push(new User("Ashley", "Parr"));
+		usersList.push(new User("Gord", "Rees"));
+		usersList.push(new User("Karen", "Rees"));
+		
+		console.log(usersList.first());
+		console.log(usersList.last());
+		console.log(usersList.pluck("firstName"));
+		console.log(usersList.shuffle());
+		console.log(usersList.where(function(item) {
+			return item.lastName === "Rees";
+		}));
+		
+		dm.config.errors.redirectOnErrors = false;
+		dm.config.authentication.usesAuthentication = false;
+		
+		dm.utilities.http.get("index.php")
+		.done(function(){
+			alert("done");
+		})
+		.fail(function(){
+			alert("fail");
+		});
+	</script>
+</body>
+</html>

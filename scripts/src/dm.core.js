@@ -1,8 +1,10 @@
-window.dm = window.dm || {};
-window.dm.core = window.dm.core || {};
-window.dm.core.utilities = window.dm.core.utilities || {};
+/// <reference path="../../typescript.definitions/dm.core.d.ts""/>
 
-window.dm.configuration = {
+window.dm = window.dm || {};
+window.dm.types = window.dm.types || {};
+window.dm.utilities = window.dm.utilities || {};
+
+window.dm.config = {
 	basePath: undefined,
 	errors: {
 		redirectOnErrors: true,

@@ -1,4 +1,6 @@
-var DMList = function (array) {
+/// <reference path="../../../../typescript.definitions/dm.core.d.ts""/>
+
+window.dm.types.List = function (array) {
 	"use strict";
 	var arr = [];
 	
@@ -27,7 +29,7 @@ var DMList = function (array) {
 			}
  		});
 		
-		return new DMList(whereResults);
+		return new dm.types.List(whereResults);
 	};
 	
 	arr.pluck = function (propertyName) {
@@ -43,7 +45,7 @@ var DMList = function (array) {
 			}
 		});
 		
-		return new DMList(pluckResults);
+		return new dm.types.List(pluckResults);
 	};
 	
 	arr.shuffle = function() {

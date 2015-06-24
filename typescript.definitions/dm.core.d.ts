@@ -57,40 +57,62 @@ interface JQueryPromise<T> extends JQueryGenericPromise<T> {
     pipe(doneFilter?: (x: any) => any, failFilter?: (x: any) => any, progressFilter?: (x: any) => any): JQueryPromise<any>;
 }
 
-
-
-interface DMList {
-	first() : any[];
-	last() : any[];
-	where(test: Function) : any[];
-	pluck(propertyName: string) : any[];
-	shuffle() : any[];
-}
-declare var DMList: {
-	  /**
+//new dm.types.List
+interface TypesList_Static {
+     /**
       * Creates an extended array which has various helper methods. The base object is still array.
       *
       * @param array (optional) array used to create the extended type. 
       */
-	new (array?: any[]) : DMList;	
+	new (array?: any[]) : TypesList_Instance;	
+}
+interface TypesList_Instance {
+     first() : any[];
+     last() : any[];
+     where(test: Function) : any[];
+     pluck(propertyName: string) : any[];
+     shuffle() : any[];
 }
 
-interface CoreUtilitiesHttp {
-	get(): JQueryPromise<any>;
-	post(): JQueryPromise<any>;
-	put(): JQueryPromise<any>;
-	delete(): JQueryPromise<any>;
+//dm.types
+interface Types {
+     List: TypesList_Static;
+}
+
+//dm.utilities.http
+interface UtilitiesHttp {
+	get(url: string): JQueryPromise<any>;
+	post(url: string, data: any): JQueryPromise<any>;
+	put(url: string, data: any): JQueryPromise<any>;
+	delete(url: string, data: any): JQueryPromise<any>;
 	settings: any;
 }
 
-interface CoreUtilities {
-	http : CoreUtilitiesHttp;
+//dm.utilities
+interface Utilities {
+	http : UtilitiesHttp;
 }
-interface CoreStaticMembers {
-	utilities : CoreUtilities;	
+
+//dm.configuration
+interface DMConfigurationErrors {
+     redirectOnErrors: boolean;
+     defaultErrorPage: string;
 }
+interface DMConfigurationAuthentication {
+     usesAuthentication: boolean;
+     loginPage: string;
+}
+interface DMConfiguration {
+     basePath: string;
+     errors: DMConfigurationErrors;
+     authentication: DMConfigurationAuthentication;   
+}
+
+//dm
 interface DMStatic {
-	core : CoreStaticMembers;
+     config: DMConfiguration;
+     utilities : Utilities;
+     types: Types;
 }
 
 declare var dm: DMStatic;
