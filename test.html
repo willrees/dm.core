@@ -31,16 +31,6 @@
 			return item.lastName === "Rees";
 		}));
 		
-		dm.config.errors.redirectOnErrors = false;
-		dm.config.authentication.usesAuthentication = false;
-		
-		dm.utilities.http.get("index.php")
-		.done(function(){
-			alert("done");
-		})
-		.fail(function(){
-			alert("fail");
-		});
 	</script>
 </body>
 </html>

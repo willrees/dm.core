@@ -57,40 +57,85 @@ interface JQueryPromise<T> extends JQueryGenericPromise<T> {
     pipe(doneFilter?: (x: any) => any, failFilter?: (x: any) => any, progressFilter?: (x: any) => any): JQueryPromise<any>;
 }
 
-//new dm.types.List
-interface TypesList_Static {
+//new dm.List
+interface List_Static {
      /**
       * Creates an extended array which has various helper methods. The base object is still array.
       *
       * @param array (optional) array used to create the extended type. 
+      * @return TypesList
       */
-	new (array?: any[]) : TypesList_Instance;	
+	new (array?: any[]) : List_Instance;	
 }
-interface TypesList_Instance {
+interface List_Instance {
+    /**
+      * Gets the first item in the list.
+      * 
+      * @return any
+      */
      first() : any[];
+     /**
+      * Gets the last item in the list.
+      * 
+      * @return any
+      */
      last() : any[];
+     /**
+      * Searches the array for specific values and returns a new List_Instance.
+      * 
+      * @param test Function - The test that you are filtering against. This function recieves an item parameter and must return bool.
+      * @return List_Instance
+      */
      where(test: Function) : any[];
+     /**
+      * Creates a new List of a specific property. 
+      * 
+      * @param propertyName string - the name of the property on each item.
+      * @return List_Instance
+      */
      pluck(propertyName: string) : any[];
+     /**
+      * Shuffles the List.
+      * 
+      * @return List_Instance
+      */
      shuffle() : any[];
 }
 
-//dm.types
-interface Types {
-     List: TypesList_Static;
-}
-
-//dm.utilities.http
-interface UtilitiesHttp {
+//dm.http
+interface Http {
+    /**
+      * Executes an async get request.
+      * 
+      * @param url string - The url for the requested resource.
+      * @return JQueryPromise<any>
+      */
 	get(url: string): JQueryPromise<any>;
+    /**
+      * Executes an async post request.
+      * 
+      * @param url string - The url for the requested resource.
+      * @param data any - Object containing the post data.
+      * @return JQueryPromise<any>
+      */
 	post(url: string, data: any): JQueryPromise<any>;
+    /**
+      * Executes an async put request.
+      * 
+      * @param url string - The url for the requested resource.
+      * @param data any - Object containing the post data.
+      * @return JQueryPromise<any>
+      */
 	put(url: string, data: any): JQueryPromise<any>;
+    /**
+      * Executes an async delete request.
+      * 
+      * @param url string - The url for the requested resource.
+      * @param data any - Object containing the post data.
+      * @return JQueryPromise<any>
+      */
 	delete(url: string, data: any): JQueryPromise<any>;
 	settings: any;
-}
-
-//dm.utilities
-interface Utilities {
-	http : UtilitiesHttp;
 }
 
 //dm.configuration
@@ -110,9 +155,9 @@ interface DMConfiguration {
 
 //dm
 interface DMStatic {
-     config: DMConfiguration;
-     utilities : Utilities;
-     types: Types;
+     config: DMConfiguration;    
+     List: List_Static; 
+     http : Http;
 }
 
 declare var dm: DMStatic;

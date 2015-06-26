@@ -1,4 +1,4 @@
-/// <reference path="../../../typescript.definitions/dm.core.d.ts""/>
+/// <reference path="../../typescript.definitions/dm.core.d.ts""/>
 
 window.dm.utilities.http = function ($, configuration) {
 
@@ -33,7 +33,7 @@ window.dm.utilities.http = function ($, configuration) {
         $.ajax(options);
 
         return deferred.promise();
-    };
+    };    
 
     var redirectToErrorView = function (d) {
         if ((d.status === 450 || d.status === 401 || d.status === 403) && configuration.authentication.usesAuthentication) {

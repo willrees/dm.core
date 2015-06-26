@@ -7,9 +7,9 @@
         concat: {
             dist: {
                 src: [                    
-                    'scripts/src/dm.core.js', // Combine all form scripts
-                    'scripts/src/types/list/list.js',
-                    'scripts/src/utilities/http.js',
+                    'scripts/src/dm.core.js',
+                    'scripts/src/dm.List.js',
+                    'scripts/src/dm.http.js',
                 ],
                 dest: 'scripts/dist/dm.core.js',
             }

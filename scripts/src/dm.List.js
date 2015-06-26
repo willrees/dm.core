@@ -1,4 +1,4 @@
-/// <reference path="../../../../typescript.definitions/dm.core.d.ts""/>
+/// <reference path="../../typescript.definitions/dm.core.d.ts""/>
 
 window.dm.types.List = function (array) {
 	"use strict";
