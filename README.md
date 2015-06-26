@@ -12,7 +12,7 @@ This library contains all the core utilities, js extensions and help required fo
 	<li><a href="#ConsumerSetup">Consumer Setup</a></li>
 </ul>
 
-<span id="#ContributorSetup">**Contributor Setup**</span>
+<span name="#ContributorSetup" id="#ContributorSetup">**Contributor Setup**</span>
 
 This library will work with any build tools and ide but for the best experiance you should use the recommended setup.
 
