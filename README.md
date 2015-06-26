@@ -8,8 +8,8 @@ This library contains all the core utilities, js extensions and help required fo
 ##Tool Setup
 
 <ul>
-	<li>[Contributor Setup](#ContributorSetup)</li>
-	<li>[Consumer Setup](#ConsumerSetup)</li>
+	<li><a href="#ContributorSetup">Contributor Setup</a></li>
+	<li><a href="#ConsumerSetup">Consumer Setup</a></li>
 </ul>
 
 <span id="#ContributorSetup">**Contributor Setup**</span>
@@ -17,7 +17,7 @@ This library contains all the core utilities, js extensions and help required fo
 This library will work with any build tools and ide but for the best experiance you should use the recommended setup.
 
 <ul>
-	<li>[Install Node JS](https://nodejs.org/download/) - For windows make sure node JS is added to the PATH enviornment variable. To check that node was successfully installed open you command line tool(Windows) or terminal(MAC) and execute the commands node -v and npm -v</li>
+	<li><a href="https://nodejs.org/download/">Install Node JS</a> - For windows make sure node JS is added to the PATH enviornment variable. To check that node was successfully installed open you command line tool(Windows) or terminal(MAC) and execute the commands node -v and npm -v</li>
 	<li>Install GRUNT - Javascript Task Runner
 		<ul>
 			<li>**Windows Users** - Open command line tool as administrator.</li>
@@ -26,8 +26,8 @@ This library will work with any build tools and ide but for the best experiance 
 			<li>npm install -g grunt-cli</li>
 		</ul>
 	</li>
-	<li>[Install VS Code](https://www.visualstudio.com/en-us/products/code-vs.aspx) - You can use any editor but VS code povides the best integration with GitHub and also supports typescript definition files which are used to add intellisense for the dm code base.</li>
-	<li>Install GitHub [Windows](https://windows.github.com/), [MAC](https://mac.github.com/)</li>
+	<li><a href="https://www.visualstudio.com/en-us/products/code-vs.aspx">Install VS Code</a> - You can use any editor but VS code povides the best integration with GitHub and also supports typescript definition files which are used to add intellisense for the dm code base.</li>
+	<li>Install GitHub <a href="https://windows.github.com/">Windows</a>, <a href="https://mac.github.com/">MAC</a></li>
 </ul>
 
 After all the tooling has been setup you can download the src and start working. To make updates or add new features follow the below directions.
