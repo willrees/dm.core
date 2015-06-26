@@ -64,9 +64,123 @@ This library contains a typescript definition file which will add IntelliSense i
 
 
 ##Documentation
+___
 
-**dm.List**
+##dm.List
 
-Overview<br>
+###Overview
 	
-dm.List  
+dm.List provides extend functions to the array prototye. It does not modify the actual prototye but instead will add the additional properties and methods to each newly created array. dm.List provides the following functions which are not yet available on the array prototype:
+
+<ul>
+	<li>first</li>
+	<li>last</li>
+	<li>where</li>
+	<li>shuffle</li>
+	<li>pluck</li>
+</ul>
+
+####Usage
+
+You can create an empty list or initialize the list with an existing array of elements. You create a new list type with the following:
+
+<pre>
+	var list = new dm.List();
+</pre>
+
+or
+<pre>
+	var usersArray = [{firstName: "John", lastName: "Doe"}, {firstName: "Jane", lastName: "Doe"}];
+	var list = new dm.List(usersArray);
+</pre>
+
+###Functions
+
+####First
+
+Lirst will return the first object in the array.
+<pre>
+	var list = new dm.List();
+	var first = list.first();
+</pre> 
+
+####Last
+
+Last will return the last object in the array.
+<pre>
+	var list = new dm.List();
+	var last = list.last();
+</pre> 
+
+####Where
+
+Where is used to filter the list for specific values. For example if you had an array in the following form
+<pre>
+	var usersList = [
+		{
+			firstName: "Jack",
+			lastName: "O'Neill",
+		},
+		{
+			firstName: "Jean Luc",
+			lastName: "Picard",
+		},
+		{
+			firstName: "Jack",
+			lastName: "Nicholson",
+		},
+		{
+			firstName: "Lieutenant Commander",
+			lastName: "Data",
+		}
+	]
+</pre>
+
+and you executed the following
+
+<pre>
+	var list = new dm.List(usersList);
+	var filteredList = list.where(function(item) {
+		return item.firstName === "Jack";
+	});
+</pre> 
+
+new list would equal
+
+<pre>
+	[
+		{
+			firstName: "Jack",
+			lastName: "O'Neill",
+		},		
+		{
+			firstName: "Jack",
+			lastName: "Nicholson",
+		}		
+	]
+</pre>
+
+if there is no matches you will get an empty List().
+
+####Shuffle
+
+Shuffle will randomize the order of the items in the orginal list. 
+<pre>
+	var list = new dm.List();
+	var last = list.shuffle();
+</pre> 
+
+
+####Pluck
+
+Pluck will return a new List() which contains only the property you specified. For example if you execute the following on the usersList above 
+<pre>
+	var list = new dm.List(usersList);
+	var firstNames = list.pluck("firstName");
+</pre> 
+
+firstNames would equal
+
+<pre>
+	["Jack", "Jean Luc", "Jack", "Lieutenant Commander"]
+</pre>
