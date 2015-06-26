@@ -22,8 +22,8 @@ This library will work with any build tools and ide but for the best experiance 
 		<ul>
 			<li>**Windows Users** - Open command line tool as administrator.</li>
 			<li>**MAC Users** - Execute the blow commands with the sudo prefix. For example "npm install" would actually be "sudo npm install"</li>
-			<li>npm update -g npm</li>
-			<li>npm install -g grunt-cli</li>
+			<li><pre>npm update -g npm</pre></li>
+			<li><pre>npm install -g grunt-cli</pre></li>
 		</ul>
 	</li>
 	<li><a href="https://www.visualstudio.com/en-us/products/code-vs.aspx" target="_blank">Install VS Code</a> - You can use any editor but VS code povides the best integration with GitHub and also supports typescript definition files which are used to add intellisense for the dm code base.</li>
@@ -51,3 +51,13 @@ After all the tooling has been setup you can download the src and start working.
 		</ul>
 	</li>		
 </ul>
+
+
+**Consumer Setup**
+
+To use one of the builds just download dm.core.js ro dm.core.min.js from the dist folder under scripts and add it to your project. 
+
+##IntelliSense
+
+This library contains a typescript definition file which will add IntelliSense in VS Code or Visual Studio. To use this feature you will need to include the definition file "dm.core.d.ts" to your project/solution and then add the following reference to every js file 
+<pre>/// <reference path="../../typescript.definitions/dm.core.d.ts""/></pre>
