@@ -60,4 +60,4 @@ To use one of the builds just download dm.core.js ro dm.core.min.js from the dis
 ##IntelliSense
 
 This library contains a typescript definition file which will add IntelliSense in VS Code or Visual Studio. To use this feature you will need to include the definition file "dm.core.d.ts" to your project/solution and then add the following reference to every js file 
-<pre>/// <reference path="../../typescript.definitions/dm.core.d.ts""/></pre>
+<pre>/// &lt;reference path="../../typescript.definitions/dm.core.d.ts"/&gt;</pre>
