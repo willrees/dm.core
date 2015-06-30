@@ -1,6 +1,6 @@
 /// <reference path="../../typescript.definitions/dm.core.d.ts""/>
 
-window.dm.types.List = function (array) {
+window.dm.List = function (array) {
 	"use strict";
 	var arr = [];
 	

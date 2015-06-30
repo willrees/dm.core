@@ -1,6 +1,7 @@
 /// <reference path="../../typescript.definitions/dm.core.d.ts""/>
 
 window.dm = window.dm || {};
+window.dm.utilities = window.dm.utilities || {};
 
 window.dm.config = {
 	basePath: undefined,
@@ -15,7 +16,7 @@ window.dm.config = {
 };
 /// <reference path="../../typescript.definitions/dm.core.d.ts""/>
 
-window.dm.types.List = function (array) {
+window.dm.List = function (array) {
 	"use strict";
 	var arr = [];
 	

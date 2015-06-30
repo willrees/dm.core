@@ -57,6 +57,21 @@ interface JQueryPromise<T> extends JQueryGenericPromise<T> {
     pipe(doneFilter?: (x: any) => any, failFilter?: (x: any) => any, progressFilter?: (x: any) => any): JQueryPromise<any>;
 }
 
+//dm.configuration
+interface DMConfigurationErrors {
+     redirectOnErrors: boolean;
+     defaultErrorPage: string;
+}
+interface DMConfigurationAuthentication {
+     usesAuthentication: boolean;
+     loginPage: string;
+}
+interface DMConfiguration {
+     basePath: string;
+     errors: DMConfigurationErrors;
+     authentication: DMConfigurationAuthentication;   
+}
+
 //new dm.List
 interface List_Static {
      /**
@@ -138,19 +153,20 @@ interface Http {
 	settings: any;
 }
 
-//dm.configuration
-interface DMConfigurationErrors {
-     redirectOnErrors: boolean;
-     defaultErrorPage: string;
+//dm.utilities
+interface Utilities {
+      date: UtilitiesDate; 
 }
-interface DMConfigurationAuthentication {
-     usesAuthentication: boolean;
-     loginPage: string;
-}
-interface DMConfiguration {
-     basePath: string;
-     errors: DMConfigurationErrors;
-     authentication: DMConfigurationAuthentication;   
+
+
+interface UtilitiesDate {
+      /**
+      * Checks a string to see if it is a valid date
+      * 
+      * @param txtDate string - The text representation of the date.      
+      * @return Boolean
+      */
+      isDate(txtDate: string) : Boolean;
 }
 
 //dm
@@ -158,6 +174,7 @@ interface DMStatic {
      config: DMConfiguration;    
      List: List_Static; 
      http : Http;
+     utilities: Utilities;
 }
 
 declare var dm: DMStatic;

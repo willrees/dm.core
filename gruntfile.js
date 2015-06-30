@@ -10,6 +10,7 @@
                     'scripts/src/dm.core.js',
                     'scripts/src/dm.List.js',
                     'scripts/src/dm.http.js',
+                    'scripts/src/dm.utilities.js'
                 ],
                 dest: 'scripts/dist/dm.core.js',
             }
