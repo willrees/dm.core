@@ -32,6 +32,45 @@
 			return item.lastName === "Rees";
 		}));
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		dm.createComponent("myComponent", function($) {
+			var talk = function () {
+				$('body').append('<h1>Test</h1>');
+				alert(dm.config.myComponent.text);	
+			};
+			
+			return {
+				talk: talk
+			};
+		}, {
+			text: "Default Message Text"
+		}, jQuery);
+		
+		dm.setConfiguration({
+			myComponent: {
+				text: "updated message text"
+			}
+		});
+		
+		dm.bind();
+		
 	</script>
 </body>
 </html>
+

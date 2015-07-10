@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>DM Core Test</title>
+</head>
+<body>
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam fringilla libero in semper porttitor. Nunc efficitur ligula dui, ut lobortis nisl volutpat eu. Praesent maximus tempor orci, ut efficitur orci tincidunt pharetra. Integer eget tellus et diam laoreet bibendum eu ut erat. Nunc rutrum eros ut risus tristique rhoncus. Vestibulum ac nibh et orci dictum rutrum vel et dolor. Pellentesque bibendum dignissim odio, posuere laoreet lectus viverra eu. Ut sagittis pharetra tortor sed placerat. Pellentesque eleifend libero in rutrum convallis. Nam tincidunt velit ut leo facilisis, in scelerisque elit volutpat. Donec vehicula blandit pretium. Maecenas ex nulla, commodo ac ante non, volutpat malesuada augue. Duis suscipit, enim sit amet venenatis facilisis, elit metus maximus sapien, quis tempor erat purus vel tellus. Vivamus molestie magna a ante varius pellentesque. Suspendisse id tortor eu ex consectetur porta vitae a mi. Curabitur non sapien urna.</p>
+	
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam fringilla libero in semper porttitor. Nunc efficitur ligula dui, ut lobortis nisl volutpat eu. Praesent maximus tempor orci, ut efficitur orci tincidunt pharetra. Integer eget tellus et diam laoreet bibendum eu ut erat. Nunc rutrum eros ut risus tristique rhoncus. Vestibulum ac nibh et orci dictum rutrum vel et dolor. Pellentesque bibendum dignissim odio, posuere laoreet lectus viverra eu. Ut sagittis pharetra tortor sed placerat. Pellentesque eleifend libero in rutrum convallis. Nam tincidunt velit ut leo facilisis, in scelerisque elit volutpat. Donec vehicula blandit pretium. Maecenas ex nulla, commodo ac ante non, volutpat malesuada augue. Duis suscipit, enim sit amet venenatis facilisis, elit metus maximus sapien, quis tempor erat purus vel tellus. Vivamus molestie magna a ante varius pellentesque. Suspendisse id tortor eu ex consectetur porta vitae a mi. Curabitur non sapien urna.</p>
+	<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>	
+	<script>
+		//Core lib used for registering and initializing components.
+		//Everything inside this script tag will be included in dm.core.js. It is only in this file for a quick example.
+		var dm = function (selector) { 
+			return new dm.fn.init(selector);	
+		};
+		
+		dm.config = {};
+		dm.registeredComponents = [];
+		dm.fn = dm.prototype;
+		
+		dm.fn.init = function (selector) {			
+			this.selector = selector;
+			console.log(this);
+			return this;
+		};
+		
+		dm.fn.init.prototype = dm.prototype;
+		
+		dm.componentFactory = function (componentName, component, settings, dependencies) {
+			if (this.fn[componentName] === undefined) {
+				
+				if (settings !== undefined && settings !== null)
+				{
+					this.config[componentName] = settings;
+				}
+				
+				this.registeredComponents.push({
+					name: componentName,
+					component: component,
+					dependencies: dependencies,
+					initialized: false
+				}); 
+			}	
+		};
+		
+		dm.bind = function (settings) {
+			if (settings != undefined) {
+				this.config = jQuery.extend(true, this.config, settings);
+			}
+			for (var i = 0; i < this.registeredComponents.length; i++) {
+				var componentDef = this.registeredComponents[i];
+				if (componentDef.initialized === false) {
+					componentDef.initialized = true;
+					this.fn[componentDef.name] = componentDef.component(componentDef.dependencies);
+				}
+			}
+		};
+		
+		
+		
+	</script>
+	
+	<script>
+		//Self invoking plugin.
+		dm.componentFactory("bigText", function($) {
+			//component definition.
+			var bigText = {
+				apply: function () {
+					var config = dm.config.bigText;
+					$('*').css('font-size', config.fontSize);	
+				},
+				remove: function () {
+					$('*').css('font-size', 'inherit');
+				}	
+			};
+			
+			//Apply behaviour.
+			bigText.apply();
+			
+			return bigText;
+			
+			
+		}, {fontSize: '20px'}, jQuery);
+	</script>
+	
+	<script>
+		
+		//Element level plugin... Similar to jQuery plugins.
+		dm.componentFactory("border", function($) {
+			
+			var border = function (options, el) {
+				
+				var defaults = {borderColor: "#000", borderWidth: "2px", borderStyle: "solid"};
+				
+				var plugin = this;
+				plugin.$el = $(this.selector);
+				plugin.settings = jQuery.extend(true, defaults, options);
+				
+				plugin.$el.each(function() {
+					$(this).css({
+						"border-color": plugin.settings.borderColor,
+						"border-width": plugin.settings.borderWidth,
+						"border-style": plugin.settings.borderStyle
+					});	
+				});
+				
+				alert(1);
+				
+				plugin.destroy = function () {					
+					this.$el.css({
+						"border-color": "initial",
+						"border-width": "initial",
+						"border-style": "initial"
+					});	
+					return this;
+				};
+				
+				return this;
+			};
+			
+			return border;
+			
+		}, null, jQuery);
+	</script>
+	
+	<script>
+		dm.bind({
+			bigText: {fontSize: "20px"}
+		});
+		
+		var first = dm("p:first").border();
+		var last = dm("p:last").border({borderColor: "red", borderWidth: "6px"});
+	</script>
+</body>
+</html>

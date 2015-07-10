@@ -29,7 +29,7 @@ window.dm.List = function (array) {
 			}
  		});
 		
-		return new dm.types.List(whereResults);
+		return new dm.List(whereResults);
 	};
 	
 	arr.pluck = function (propertyName) {
@@ -45,7 +45,7 @@ window.dm.List = function (array) {
 			}
 		});
 		
-		return new dm.types.List(pluckResults);
+		return new dm.List(pluckResults);
 	};
 	
 	arr.shuffle = function() {
@@ -65,6 +65,25 @@ window.dm.List = function (array) {
 	
 	  return arr;
 	};
+	
+	//IE8 Polyfills
+	  if (!arr["forEach"]) {
+		  arr.forEach = function (callback) {
+			  for (var i=0; i < this.length; i++) {
+				  callback.apply(this, [this[i], i, this]);
+			  }
+		  };
+	  }
+	  
+	  if (!arr["indexOf"]) {
+		  arr.indexOf = function (obj, start) {
+			  for (var i = (start || 0), j = this.length; i < j; i++) {
+				  if (this[i] === obj) {
+					  return i;
+				  }
+			  }
+		  };
+	  }
 	
 	return arr;	
 };

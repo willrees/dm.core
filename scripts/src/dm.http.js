@@ -1,6 +1,6 @@
 /// <reference path="../../typescript.definitions/dm.core.d.ts""/>
 
-window.dm.utilities.http = function ($, configuration) {
+window.dm.http = function ($, configuration) {
 
     var settings = {
         debug: false,

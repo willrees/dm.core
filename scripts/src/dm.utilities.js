@@ -38,6 +38,6 @@
 			return true;
 		}
 	};
-
+	
 	return dm.utilities;
-})(jQuery, dm.utilites.date);
+})(jQuery, dm.utilities.date);

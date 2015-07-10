@@ -1,19 +1,63 @@
-/// <reference path="../../typescript.definitions/dm.core.d.ts""/>
-
-window.dm = window.dm || {};
-window.dm.utilities = window.dm.utilities || {};
-
-window.dm.config = {
-	basePath: undefined,
-	errors: {
-		redirectOnErrors: true,
-		defaultErrorPage: undefined	
-	},
-	authentication: {
-		usesAuthentication: true,
-		loginPage: undefined
-	}	
-};
+window.dm = (function (){
+	var dm = function (selector) { 
+		return new dm.fn.init(selector);	
+	};
+	
+	dm.config = {
+		basePath: undefined,
+		errors: {
+			redirectOnErrors: true,
+			defaultErrorPage: undefined	
+		},
+		authentication: {
+			usesAuthentication: true,
+			loginPage: undefined
+		}	
+	};
+	
+	dm.registeredComponents = [];
+		dm.fn = dm.prototype;
+		
+		dm.fn.init = function (selector) {			
+			this.selector = selector;
+			console.log(this);
+			return this;
+		};
+		
+		dm.fn.init.prototype = dm.prototype;
+		
+		dm.componentFactory = function (componentName, component, settings, dependencies) {
+			if (this.fn[componentName] === undefined) {
+				
+				if (settings !== undefined && settings !== null)
+				{
+					this.config[componentName] = settings;
+				}
+				
+				this.registeredComponents.push({
+					name: componentName,
+					component: component,
+					dependencies: dependencies,
+					initialized: false
+				}); 
+			}	
+		};
+		
+		dm.bind = function (settings) {
+			if (settings != undefined) {
+				this.config = jQuery.extend(true, this.config, settings);
+			}
+			for (var i = 0; i < this.registeredComponents.length; i++) {
+				var componentDef = this.registeredComponents[i];
+				if (componentDef.initialized === false) {
+					componentDef.initialized = true;
+					this.fn[componentDef.name] = componentDef.component(componentDef.dependencies);
+				}
+			}
+		};
+	
+	return dm;
+})();
 /// <reference path="../../typescript.definitions/dm.core.d.ts""/>
 
 window.dm.List = function (array) {
@@ -45,7 +89,7 @@ window.dm.List = function (array) {
 			}
  		});
 		
-		return new dm.types.List(whereResults);
+		return new dm.List(whereResults);
 	};
 	
 	arr.pluck = function (propertyName) {
@@ -61,7 +105,7 @@ window.dm.List = function (array) {
 			}
 		});
 		
-		return new dm.types.List(pluckResults);
+		return new dm.List(pluckResults);
 	};
 	
 	arr.shuffle = function() {
@@ -82,11 +126,30 @@ window.dm.List = function (array) {
 	  return arr;
 	};
 	
+	//IE8 Polyfills
+	  if (!arr["forEach"]) {
+		  arr.forEach = function (callback) {
+			  for (var i=0; i < this.length; i++) {
+				  callback.apply(this, [this[i], i, this]);
+			  }
+		  };
+	  }
+	  
+	  if (!arr["indexOf"]) {
+		  arr.indexOf = function (obj, start) {
+			  for (var i = (start || 0), j = this.length; i < j; i++) {
+				  if (this[i] === obj) {
+					  return i;
+				  }
+			  }
+		  };
+	  }
+	
 	return arr;	
 };
 /// <reference path="../../typescript.definitions/dm.core.d.ts""/>
 
-window.dm.utilities.http = function ($, configuration) {
+window.dm.http = function ($, configuration) {
 
     var settings = {
         debug: false,
@@ -192,3 +255,46 @@ window.dm.utilities.http = function ($, configuration) {
         settings: settings
     };
 }(jQuery, dm.config);
+(function ($, context) {
+	"use strict";
+
+	dm.utilities.date = {
+		/**
+		 * Checks a string to determine if it is a valid date.
+		 * @param {string} txtDate - a string representation of a date.
+		 * @return {bool} 
+		 */
+		isDate: function(txtDate) {
+			var currVal = txtDate;
+			if (currVal === '')
+				return false;
+	
+			//Declare Regex  
+			var rxDatePattern = /^(\d{1,2})(\/|-)(\d{1,2})(\/|-)(\d{4})$/;
+			var dtArray = currVal.match(rxDatePattern); // is format OK?
+	
+			if (dtArray === null)
+				return false;
+	
+			//Checks for mm/dd/yyyy format.
+			var dateMonth = parseInt(dtArray[1]);
+			var dateDay = parseInt(dtArray[3]);
+			var dateYear = parseInt(dtArray[5]);
+	
+			if (dateMonth < 1 || dateMonth > 12)
+				return false;
+			else if (dateDay < 1 || dateDay > 31)
+				return false;
+			else if ((dateMonth == 4 || dateMonth == 6 || dateMonth == 9 || dateMonth == 11) && dateDay == 31)
+				return false;
+			else if (dateMonth == 2) {
+				var isleap = (dateYear % 4 === 0 && (dateYear % 100 !== 0 || dateYear % 400 === 0));
+				if (dateDay > 29 || (dateDay == 29 && !isleap))
+					return false;
+			}
+			return true;
+		}
+	};
+	
+	return dm.utilities;
+})(jQuery, dm.utilities.date);
