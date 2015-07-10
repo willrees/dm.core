@@ -1,3 +1,5 @@
+/// <reference path="../../typescript.definitions/dm.core.d.ts""/>
+
 window.dm = (function (){
 	var dm = function (selector) { 
 		return new dm.fn.init(selector);	
@@ -15,46 +17,63 @@ window.dm = (function (){
 		}	
 	};
 	
+	dm.utilities = {};
+	
 	dm.registeredComponents = [];
-		dm.fn = dm.prototype;
-		
-		dm.fn.init = function (selector) {			
-			this.selector = selector;
-			console.log(this);
-			return this;
-		};
-		
-		dm.fn.init.prototype = dm.prototype;
-		
-		dm.componentFactory = function (componentName, component, settings, dependencies) {
-			if (this.fn[componentName] === undefined) {
-				
-				if (settings !== undefined && settings !== null)
-				{
-					this.config[componentName] = settings;
-				}
-				
-				this.registeredComponents.push({
-					name: componentName,
-					component: component,
-					dependencies: dependencies,
-					initialized: false
-				}); 
-			}	
-		};
-		
-		dm.bind = function (settings) {
-			if (settings != undefined) {
-				this.config = jQuery.extend(true, this.config, settings);
+	
+	dm.fn = dm.prototype;
+	
+	dm.fn.init = function (selector) {			
+		this.selector = selector;
+		console.log(this);
+		return this;
+	};
+	
+	dm.fn.init.prototype = dm.prototype;
+	
+	dm.componentFactory = function (componentName, component, settings, dependencies) {
+		componentFactory(componentName, component, settings, dependencies, false)
+	};
+	
+	dm.globalComponentFactory = function (componentName, component, settings, dependencies) {
+		componentFactory(componentName, component, settings, dependencies, true)
+	};
+	
+	
+	dm.bind = function (settings) {
+		if (settings != undefined) {
+			this.config = jQuery.extend(true, this.config, settings);
+		}
+		for (var i = 0; i < this.registeredComponents.length; i++) {
+			var componentDef = this.registeredComponents[i];
+			if (componentDef.initialized === false) {
+				componentDef.initialized = true;
+				var namespace = (componentDef.global) ? dm : dm.fn;
+				namespace[componentDef.name] = componentDef.component(componentDef.dependencies);
 			}
-			for (var i = 0; i < this.registeredComponents.length; i++) {
-				var componentDef = this.registeredComponents[i];
-				if (componentDef.initialized === false) {
-					componentDef.initialized = true;
-					this.fn[componentDef.name] = componentDef.component(componentDef.dependencies);
-				}
+		}
+	};
+	
+	function componentFactory(componentName, component, settings, dependencies, global)	{
+		var namespace = (global) ? dm : dm.fn;
+		console.log("namepace");
+		console.log(namespace);
+		if (namespace[componentName] === undefined) {
+			
+			if (settings !== undefined && settings !== null)
+			{
+				dm.config[componentName] = settings;
 			}
-		};
+			
+			dm.registeredComponents.push({
+				name: componentName,
+				component: component,
+				dependencies: dependencies,
+				initialized: false,
+				global: global
+			}); 
+		}	
+	}
 	
 	return dm;
 })();
@@ -255,10 +274,12 @@ window.dm.http = function ($, configuration) {
         settings: settings
     };
 }(jQuery, dm.config);
-(function ($, context) {
-	"use strict";
+/// <reference path="../../typescript.definitions/dm.core.d.ts""/>
 
-	dm.utilities.date = {
+dm.utilities.date = (function ($) {
+	"use strict";
+	
+	return {
 		/**
 		 * Checks a string to determine if it is a valid date.
 		 * @param {string} txtDate - a string representation of a date.
@@ -296,5 +317,4 @@ window.dm.http = function ($, configuration) {
 		}
 	};
 	
-	return dm.utilities;
-})(jQuery, dm.utilities.date);
+})(jQuery);

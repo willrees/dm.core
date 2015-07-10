@@ -1,7 +1,9 @@
-(function ($, context) {
-	"use strict";
+/// <reference path="../../typescript.definitions/dm.core.d.ts""/>
 
-	dm.utilities.date = {
+dm.utilities.date = (function ($) {
+	"use strict";
+	
+	return {
 		/**
 		 * Checks a string to determine if it is a valid date.
 		 * @param {string} txtDate - a string representation of a date.
@@ -39,5 +41,4 @@
 		}
 	};
 	
-	return dm.utilities;
-})(jQuery, dm.utilities.date);
+})(jQuery);
