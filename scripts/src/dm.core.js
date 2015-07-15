@@ -4,15 +4,7 @@ window.dm = (function (){
 	};
 	
 	dm.config = {
-		basePath: undefined,
-		errors: {
-			redirectOnErrors: true,
-			defaultErrorPage: undefined	
-		},
-		authentication: {
-			usesAuthentication: true,
-			loginPage: undefined
-		}	
+		basePath: undefined,	
 	};
 	
 	dm.utilities = {};
