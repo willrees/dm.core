@@ -1,5 +1,3 @@
-/// <reference path="../../typescript.definitions/dm.core.d.ts""/>
-
 dm.utilities.date = (function ($) {
 	"use strict";
 	

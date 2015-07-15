@@ -1,5 +1,3 @@
-/// <reference path="../../typescript.definitions/dm.core.d.ts""/>
-
 window.dm.http = function ($, configuration) {
 
     var settings = {

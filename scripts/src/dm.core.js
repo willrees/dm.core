@@ -1,5 +1,3 @@
-/// <reference path="../../typescript.definitions/dm.core.d.ts""/>
-
 window.dm = (function (){
 	var dm = function (selector) { 
 		return new dm.fn.init(selector);	
@@ -49,15 +47,14 @@ window.dm = (function (){
 			if (componentDef.initialized === false) {
 				componentDef.initialized = true;
 				var namespace = (componentDef.global) ? dm : dm.fn;
-				namespace[componentDef.name] = componentDef.component(componentDef.dependencies);
+				namespace[componentDef.name] = componentDef.component.apply(namespace[componentDef.name], componentDef.dependencies);
 			}
 		}
 	};
 	
 	function componentFactory(componentName, component, settings, dependencies, global)	{
 		var namespace = (global) ? dm : dm.fn;
-		console.log("namepace");
-		console.log(namespace);
+		
 		if (namespace[componentName] === undefined) {
 			
 			if (settings !== undefined && settings !== null)
