@@ -5,9 +5,7 @@ window.dm = (function (){
 	
 	dm.config = {
 		basePath: undefined,	
-	};
-	
-	dm.utilities = {};
+	};	
 	
 	dm.registeredComponents = [];
 	
@@ -349,10 +347,8 @@ dm.globalComponentFactory("http", function() {
 		loginPage: undefined
 	}
 }, [jQuery]);
-dm.utilities.date = (function ($) {
-	"use strict";
-	
-	return {
+dm.globalComponentFactory("utilities", function($) {	
+	var date = {
 		/**
 		 * Checks a string to determine if it is a valid date.
 		 * @param {string} txtDate - a string representation of a date.
@@ -388,6 +384,9 @@ dm.utilities.date = (function ($) {
 			}
 			return true;
 		}
-	};
+	}
 	
-})(jQuery);
+	return {
+		date: date
+	}
+}, null, [jQuery]);

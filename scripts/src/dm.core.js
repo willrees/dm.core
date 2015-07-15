@@ -5,9 +5,7 @@ window.dm = (function (){
 	
 	dm.config = {
 		basePath: undefined,	
-	};
-	
-	dm.utilities = {};
+	};	
 	
 	dm.registeredComponents = [];
 	
