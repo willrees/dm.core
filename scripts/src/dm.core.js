@@ -13,7 +13,6 @@ window.dm = (function (){
 	
 	dm.fn.init = function (selector) {			
 		this.selector = selector;
-		console.log(this);
 		return this;
 	};
 	
