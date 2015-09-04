@@ -58,7 +58,7 @@ dm.globalComponentFactory("http", function() {
             } else if (response.Success === false) {
                 //Request was not successful and was handled gracefully on the server.
                 //TODO:: Display frendly error message on client.                
-                deferred.reject(response.Errors);            
+                deferred.reject(response);            
             } else {
                 //An unknown error occured or the response object was not in the expected format. redirect to the error page.
                 if (settings.debug) {
