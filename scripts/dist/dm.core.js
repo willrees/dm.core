@@ -63,95 +63,93 @@ window.dm = (function (){
 	
 	return dm;
 })();
-dm.globalComponentFactory("List", function(){
-	return function(array) {
-		var arr = [];
-		
-		if (array !== undefined) {
-			arr = array;
-		}
-		
-		arr.first = function () {
-			return this[0];	
-		};
-		
-		arr.last = function () {
-			return this[this.length - 1];	
-		};
-		
-		arr.where = function (test) {
-			if (typeof test != "function")
-			{
-				throw new TypeError();
-			}
-			
-			var whereResults = [];
-			arr.forEach(function (item, index, array) {
-				if (test(JSON.parse(JSON.stringify(item)))) {
-					whereResults.push(item);
-				}
-	 		});
-			
-			return new dm.List(whereResults);
-		};
-		
-		arr.pluck = function (propertyName) {
-			if (typeof propertyName != "string") 
-			{
-				throw new TypeError();
-			}
-			
-			var pluckResults = [];
-			arr.forEach(function (item, index, array) {
-				if (item[propertyName] !== undefined) {
-					pluckResults.push(item[propertyName]);
-				}
-			});
-			
-			return new dm.List(pluckResults);
-		};
-		
-		arr.shuffle = function() {
-		  var currentIndex = arr.length;
-		  var temporaryValue;
-		  var randomIndex ;
-		
-		  while (0 !== currentIndex) {
+dm.List = function(array) {
+	var arr = [];
 	
-		    randomIndex = Math.floor(Math.random() * currentIndex);
-		    currentIndex -= 1;
-		
-		    temporaryValue = arr[currentIndex];
-		    arr[currentIndex] = arr[randomIndex];
-		    arr[randomIndex] = temporaryValue;
-		  }
-		
-		  return arr;
-		};
-		
-		//IE8 Polyfills
-		if (!arr["forEach"]) {
-		  arr.forEach = function (callback) {
-			  for (var i=0; i < this.length; i++) {
-				  callback.apply(this, [this[i], i, this]);
-			  }
-		  };
-		}
-		  
-		if (!arr["indexOf"]) {
-		  arr.indexOf = function (obj, start) {
-			  for (var i = (start || 0), j = this.length; i < j; i++) {
-				  if (this[i] === obj) {
-					  return i;
-				  }
-			  }
-		  };
-		}
-	
-		return arr;	
-		
+	if (array !== undefined) {
+		arr = array;
 	}
-}, null, []);
+	
+	arr.first = function () {
+		return this[0];	
+	};
+	
+	arr.last = function () {
+		return this[this.length - 1];	
+	};
+	
+	arr.where = function (test) {
+		if (typeof test != "function")
+		{
+			throw new TypeError();
+		}
+		
+		var whereResults = [];
+		arr.forEach(function (item, index, array) {
+			if (test(JSON.parse(JSON.stringify(item)))) {
+				whereResults.push(item);
+			}
+		});
+		
+		return new dm.List(whereResults);
+	};
+	
+	arr.pluck = function (propertyName) {
+		if (typeof propertyName != "string") 
+		{
+			throw new TypeError();
+		}
+		
+		var pluckResults = [];
+		arr.forEach(function (item, index, array) {
+			if (item[propertyName] !== undefined) {
+				pluckResults.push(item[propertyName]);
+			}
+		});
+		
+		return new dm.List(pluckResults);
+	};
+	
+	arr.shuffle = function() {
+		var currentIndex = arr.length;
+		var temporaryValue;
+		var randomIndex ;
+	
+		while (0 !== currentIndex) {
+
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex -= 1;
+	
+		temporaryValue = arr[currentIndex];
+		arr[currentIndex] = arr[randomIndex];
+		arr[randomIndex] = temporaryValue;
+		}
+	
+		return arr;
+	};
+	
+	//IE8 Polyfills
+	if (!arr["forEach"]) {
+		arr.forEach = function (callback) {
+			for (var i=0; i < this.length; i++) {
+				callback.apply(this, [this[i], i, this]);
+			}
+		};
+	}
+		
+	if (!arr["indexOf"]) {
+		arr.indexOf = function (obj, start) {
+			for (var i = (start || 0), j = this.length; i < j; i++) {
+				if (this[i] === obj) {
+					return i;
+				}
+			}
+		};
+	}
+
+	return arr;	
+	
+};
 dm.globalComponentFactory("featureDetection", function(document) {
 	var tests = [];
 	var createTest = function (testName, test, validClass, inValidClass) {
@@ -228,6 +226,36 @@ dm.globalComponentFactory("featureDetection", function(document) {
 	}
 	
 }, {enabled: false}, [document]);
+dm.globalComponentFactory('cache', function (List) {
+	
+	var cache = new List();
+	
+	var get = function (key) {
+		var cachedObj = cache.where(function(item) {
+			return item.key === key;
+		});
+		
+		return (cachedObj.length === 0) ? undefined : cachedObj[0];
+	};
+	
+	var set = function (key, value) {
+		var cachedObj = dm.cache.get(key);
+            
+		if (cachedObj === undefined || cachedObj === null) {
+			cache.push({
+				key: key,
+				value: value
+			});
+		} else {
+			cachedObj.value = value;
+		}
+	};
+	
+	return {
+		get: get,
+		set: set		
+	}
+}, null, [dm.List]);
 dm.globalComponentFactory("http", function() {
     var config = dm.config.http;
     
@@ -288,7 +316,7 @@ dm.globalComponentFactory("http", function() {
             } else if (response.Success === false) {
                 //Request was not successful and was handled gracefully on the server.
                 //TODO:: Display frendly error message on client.                
-                deferred.reject(response.Errors);            
+                deferred.reject(response);            
             } else {
                 //An unknown error occured or the response object was not in the expected format. redirect to the error page.
                 if (settings.debug) {
@@ -437,8 +465,9 @@ dm.globalComponentFactory("dataApi", function (document, $) {
 		 if ($form.valid()) {
 			var url = $triggerElement.attr("data-submit-url");
 			var data = $form.serialize();
-			dm.http.post(url, data, "json").done(function(response) {
-				
+			dm.http.post(url, data, "json")
+			.always(function(response) {
+				$triggerElement.trigger('async-submit-finished', response);
 			});	 
 		 }
 	 };
