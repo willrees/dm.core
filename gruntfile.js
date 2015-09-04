@@ -10,6 +10,7 @@
                     'scripts/src/dm.core.js',
                     'scripts/src/dm.List.js',
                     'scripts/src/dm.featureDetection.js',
+                    'scripts/src/dm.cache.js',
                     'scripts/src/dm.http.js',
                     'scripts/src/dm.utilities.js',
                     'scripts/src/dm.dataApi.js'
