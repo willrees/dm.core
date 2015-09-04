@@ -128,6 +128,11 @@ dm.List = function(array) {
 		return arr;
 	};
 	
+	arr.remove = function(item) {
+		var index = arr.indexOf(item);
+		return arr.splice(index, 1);
+	};
+	
 	//IE8 Polyfills
 	if (!arr["forEach"]) {
 		arr.forEach = function (callback) {
@@ -226,35 +231,48 @@ dm.globalComponentFactory("featureDetection", function(document) {
 	}
 	
 }, {enabled: false}, [document]);
-dm.globalComponentFactory('cache', function (List) {
+dm.globalComponentFactory('CacheProvider', function (List) {
 	
-	var cache = new List();
-	
-	var get = function (key) {
-		var cachedObj = cache.where(function(item) {
-			return item.key === key;
-		});
+	var CacheProvider = function () {
+		var cache = new List();
 		
-		return (cachedObj.length === 0) ? undefined : cachedObj[0];
-	};
-	
-	var set = function (key, value) {
-		var cachedObj = dm.cache.get(key);
-            
-		if (cachedObj === undefined || cachedObj === null) {
-			cache.push({
-				key: key,
-				value: value
+		this.get = function (key) {
+			var cachedObj = cache.where(function(item) {
+				return item.key === key;
 			});
-		} else {
-			cachedObj.value = value;
-		}
+			
+			return (cachedObj.length === 0) ? undefined : cachedObj[0];
+		};
+		
+		this.set = function (key, value) {
+			if (this.containsKey(key) === false) {
+				cache.push({
+					key: key,
+					value: value
+				});
+			} else {
+				this.get(key).value = value;
+			}
+		};
+		
+		this.containsKey = function (key) {
+			return this.get(key) !== undefined;
+		};
+		
+		this.remove = function (key) {
+			if (this.containsKey(key)) {
+				var cachedObject = this.get(key);
+				cache.remove(cachedObject);
+			}	
+		};
+		
+		this.clear = function () {
+			cache = new List();	
+		};
 	};
 	
-	return {
-		get: get,
-		set: set		
-	}
+	return CacheProvider;
+	
 }, null, [dm.List]);
 dm.globalComponentFactory("http", function() {
     var config = dm.config.http;
