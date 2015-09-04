@@ -43,8 +43,9 @@ dm.globalComponentFactory("dataApi", function (document, $) {
 		 if ($form.valid()) {
 			var url = $triggerElement.attr("data-submit-url");
 			var data = $form.serialize();
-			dm.http.post(url, data, "json").done(function(response) {
-				
+			dm.http.post(url, data, "json")
+			.always(function(response) {
+				$triggerElement.trigger('async-submit-finished', response);
 			});	 
 		 }
 	 };
