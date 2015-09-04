@@ -281,16 +281,16 @@ dm.globalComponentFactory("http", function() {
         
         var deferred = $.Deferred();
 
-        options.success = function (response, status, xhr) {            
+        options.success = function (response, status, xhr) {
+            //Request was successful. Resolve the promise and pass through the response.
             if (response.Success || (response.Success === undefined && xhr.status.toString().indexOf('2') === 0)) {
-                //Request was successful. Resolve the promise and pass through the response.
-                deferred.resolve(response);
-            } else if (response.Success === false) {
-                //Request was not successful and was handled gracefully on the server.
-                //TODO:: Display frendly error message on client.                
-                deferred.reject(response.Errors);            
+                deferred.resolve(response);     
+            //Request was not successful and was handled gracefully on the server.
+            //TODO:: Display frendly error message on client.
+            } else if (response.Success === false) {                
+                deferred.reject(response.Errors);
+            //An unknown error occured or the response object was not in the expected format. redirect to the error page.
             } else {
-                //An unknown error occured or the response object was not in the expected format. redirect to the error page.
                 if (settings.debug) {
                     alert("HTTP error occured");
                     console.log(arguments);    
