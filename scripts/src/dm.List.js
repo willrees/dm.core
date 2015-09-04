@@ -63,6 +63,11 @@ dm.List = function(array) {
 		return arr;
 	};
 	
+	arr.remove = function(item) {
+		var index = arr.indexOf(item);
+		return arr.splice(index, 1);
+	};
+	
 	//IE8 Polyfills
 	if (!arr["forEach"]) {
 		arr.forEach = function (callback) {
