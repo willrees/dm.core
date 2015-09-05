@@ -1,4 +1,4 @@
-dm.globalComponentFactory('CacheProvider', function (List) {
+dm.globalComponentFactory('cacheFactory', function (List) {
 	
 	var CacheProvider = function () {
 		var cache = new List();
@@ -38,6 +38,12 @@ dm.globalComponentFactory('CacheProvider', function (List) {
 		};
 	};
 	
-	return CacheProvider;
+	var cacheFactory = {
+		create: function () {
+			return new CacheProvider();
+		}
+	};
+	
+	return cacheFactory;
 	
 }, null, [dm.List]);
