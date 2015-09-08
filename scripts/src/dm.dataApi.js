@@ -41,7 +41,7 @@ dm.globalComponentFactory("dataApi", function (document, $) {
 		 var $form = $($triggerElement.get(0).form);
 		 
 		 if ($form.valid()) {
-			var url = $triggerElement.attr("data-submit-url");
+			var url = ($triggerElement.attr("data-submit-url") === undefined) ? $form.attr('action') : $triggerElement.attr("data-submit-url");
 			var data = $form.serialize();
 			dm.http.post(url, data, "json")
 			.always(function(response) {

@@ -88,7 +88,11 @@ dm.globalComponentFactory("http", function() {
         } else if (d.status.toString().indexOf('5') === 0 && settings.debug === false) {
             window.location = config.errors.errorPage500;
         } else if (d.status === 404) {
-            window.location = config.errors.errorPage404;
+            if (setting.debug === true) {
+                alert('404 not found')
+            } else {
+                window.location = config.errors.errorPage404;    
+            }
         } else {
             if (settings.debug) {
                 alert("HTTP error occured");

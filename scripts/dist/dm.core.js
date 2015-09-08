@@ -35,8 +35,13 @@ window.dm = (function (){
 			var componentDef = this.registeredComponents[i];
 			if (componentDef.initialized === false) {
 				componentDef.initialized = true;
-				var namespace = (componentDef.global) ? dm : dm.fn;
-				namespace[componentDef.name] = componentDef.component.apply(namespace[componentDef.name], componentDef.dependencies);
+				var namespace = (componentDef.global) ? dm : dm.fn;				
+				if (typeof componentDef.dependencies === "function") {
+					namespace[componentDef.name] = componentDef.component.apply(namespace[componentDef.name], componentDef.dependencies());	
+				} else {
+					namespace[componentDef.name] = componentDef.component.apply(namespace[componentDef.name], componentDef.dependencies);
+				}
+				
 			}
 		}
 	};
@@ -370,7 +375,11 @@ dm.globalComponentFactory("http", function() {
         } else if (d.status.toString().indexOf('5') === 0 && settings.debug === false) {
             window.location = config.errors.errorPage500;
         } else if (d.status === 404) {
-            window.location = config.errors.errorPage404;
+            if (setting.debug === true) {
+                alert('404 not found')
+            } else {
+                window.location = config.errors.errorPage404;    
+            }
         } else {
             if (settings.debug) {
                 alert("HTTP error occured");
@@ -486,7 +495,7 @@ dm.globalComponentFactory("dataApi", function (document, $) {
 		 var $form = $($triggerElement.get(0).form);
 		 
 		 if ($form.valid()) {
-			var url = $triggerElement.attr("data-submit-url");
+			var url = ($triggerElement.attr("data-submit-url") === undefined) ? $form.attr('action') : $triggerElement.attr("data-submit-url");
 			var data = $form.serialize();
 			dm.http.post(url, data, "json")
 			.always(function(response) {

@@ -35,8 +35,13 @@ window.dm = (function (){
 			var componentDef = this.registeredComponents[i];
 			if (componentDef.initialized === false) {
 				componentDef.initialized = true;
-				var namespace = (componentDef.global) ? dm : dm.fn;
-				namespace[componentDef.name] = componentDef.component.apply(namespace[componentDef.name], componentDef.dependencies);
+				var namespace = (componentDef.global) ? dm : dm.fn;				
+				if (typeof componentDef.dependencies === "function") {
+					namespace[componentDef.name] = componentDef.component.apply(namespace[componentDef.name], componentDef.dependencies());	
+				} else {
+					namespace[componentDef.name] = componentDef.component.apply(namespace[componentDef.name], componentDef.dependencies);
+				}
+				
 			}
 		}
 	};
