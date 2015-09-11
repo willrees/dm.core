@@ -101,9 +101,9 @@ The create method shown above creates and returns a new instance of a CacheProvi
 			<li>
 				Returns an item from the cache. 
 				method signature: get(key)
-				<pre>
-					rewardCache.get("appleIpodData");
-				</pre>
+<pre>
+	rewardCache.get("appleIpodData");
+</pre>
 			</li>
 		</ul>
 	</li>	
@@ -113,9 +113,9 @@ The create method shown above creates and returns a new instance of a CacheProvi
 			<li>
 				Adds a new item to the cache or updates an item if it already exists.
 				method signature: set(key, value) 
-				<pre>
-					rewardCache.set("appleIpodData", { color: 'black', size: '32gb' });
-				</pre>
+<pre>
+	rewardCache.set("appleIpodData", { color: 'black', size: '32gb' });
+</pre>
 			</li>
 		</ul>
 	</li>
