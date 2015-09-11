@@ -66,6 +66,64 @@ This library contains a typescript definition file which will add IntelliSense i
 ##Documentation
 ___
 
+
+##Overview
+
+This project contains a number of useful helpers for extension methods for woring with types like arrays and dates as well as a number of utility classes such as http handles, data api's, caching. See below for a full list of properties included in this library.
+
+<ul>
+	<li>Caching</li>
+	<li>Data Api</li>
+	<li>Feature Detection</li>
+	<li>Http</li>
+	<li>List</li>
+</ul>
+
+
+all of the above properties are accessed directly from the dm namespace and are used as building blocks for other library.
+
+##dm.cacheFactory
+
+dm.cache provides an interface for creating an in memory for cache. This cache is non persistant and will recycle on browser refresh.
+
+To start using the cache provider you need to create a new instance.
+
+<pre>
+	var rewardCache = dm.cacheFactory.create();
+</pre>
+
+The create method shown above creates and returns a new instance of a CacheProvider. each cache provider has the following methods:
+
+<ul>
+	<li>
+		get
+		<ul>
+			<li>
+				Returns an item from the cache. 
+				method signature: get(key)
+				<pre>
+					rewardCache.get("appleIpodData");
+				</pre>
+			</li>
+		</ul>
+	</li>	
+	<li>
+		set
+		<ul>
+			<li>
+				Adds a new item to the cache or updates an item if it already exists.
+				method signature: set(key, value) 
+				<pre>
+					rewardCache.set("appleIpodData", { color: 'black', size: '32gb' });
+				</pre>
+			</li>
+		</ul>
+	</li>
+	<li>containsKey</li>
+	<li>remove</li>
+	<li>clear</li>
+</ul>
+
 ##dm.List
 
 ###Overview
